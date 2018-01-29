@@ -5,13 +5,24 @@ class Posts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      contract: props.contract
+      posts: props.posts
     }
   }
 
   render(){
     return <div>
-posts
+      <h4>Posts</h4>
+      {
+        this.state.posts.map( (i,u)=>{
+            return (<li key={u}>
+              <div className="author">{i.author}</div>
+              <div className="text">{i.text}</div>
+              <div className="date">{i.date}</div>
+
+            </li>)
+          }
+        )
+      }
     </div>
   }
 

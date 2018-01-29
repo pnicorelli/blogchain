@@ -1,19 +1,32 @@
 import React from 'react';
 
-
 class Users extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      contract: props.contract
+      users: props.users
     }
+
   }
-  componentDidMount(){
-    console.log( this.state.contract );
+
+  componentWillReceiveProps(newProps){
+    console.log(newProps);
+    this.setState({
+      users: newProps.users
+    });
   }
+
   render(){
     return <div>
-Users
+      <h2>Users</h2>
+      <ul>
+        {
+          this.state.users.map( (i,u)=>{
+              return (<li key={u}>{i}</li>)
+            }
+          )
+        }
+      </ul>
     </div>
   }
 

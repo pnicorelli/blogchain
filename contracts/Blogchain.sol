@@ -17,6 +17,7 @@ contract Blogchain {
 
   Post[] posts;
   mapping(address => User) public users;
+  address[] public usersAddr;
 
   function Blogchain() public {
     owner = msg.sender;
@@ -38,6 +39,7 @@ contract Blogchain {
 
   function subscribe(string name) public {
     users[msg.sender] = User(name, 0, 0);
+    usersAddr.push(msg.sender);
   }
 
   function buyToken() public payable returns (bool){
@@ -45,7 +47,7 @@ contract Blogchain {
       return false;
     } else {
       owner.transfer(msg.value);
-      users[msg.sender].tokens = users[msg.sender].tokens + (msg.value / 10);
+      users[msg.sender].tokens = users[msg.sender].tokens + (msg.value / 1 ether);
       return true;
     }
   }
@@ -53,10 +55,29 @@ contract Blogchain {
   function writePost(string text) public returns (bool){
     if( users[msg.sender].tokens > 0 ){
       posts.push ( Post(users[msg.sender].name, text, now) );
+       users[msg.sender].tokens--;
+       users[msg.sender].posts++;
       return true;
     } else {
       return false;
     }
   }
 
+  function howManyUsers() public view returns (uint){
+    return usersAddr.length;
+  }
+
+  function getUsername(uint id) public view returns (string){
+    return users[usersAddr[id]].name;
+  }
+
+  function howManyPosts() public view returns (uint){
+    return posts.length;
+  }
+
+  function getPost(uint id) public view returns (string o_author, string o_text, uint o_date){
+    o_author = posts[id].author;
+    o_text = posts[id].text;
+    o_date = posts[id].timestamp;
+  }
 }

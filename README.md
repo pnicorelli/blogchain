@@ -6,6 +6,7 @@ THIS IS NOT SERIOUS, I'm learning smartcontracts.
 
 #### TECH
 
+- MetaMask
 - Solidity
 - Truffle
 - ReactJS
@@ -20,10 +21,16 @@ truffle compile
 
 migrate/deploy on localnet
 ```bash
-truffle migrate --network development
+npm run-script migrate
 ```
 
-#### DEV WEB INTERFACE
+#### WEB INTERFACE
+
+```bash
+npm run-script build
+```
+
+on DEV_MODE=on
 
 ```bash
 npm run-script watch

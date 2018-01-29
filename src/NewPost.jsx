@@ -7,8 +7,35 @@ class NewPost extends React.Component {
     this.state = {
       name: props.name,
       posts: props.posts,
-      tokens: props.tokens
+      tokens: props.tokens,
+      buyToken: 0,
+      buy: props.buy,
+      post: '',
+      publish: props.publish
     }
+
+    this.updateBuyToken = this.updateBuyToken.bind(this);
+    this.buy = this.buy.bind(this);
+    this.publish = this.publish.bind(this);
+    this.updatePost = this.updatePost.bind(this);
+  }
+
+  updateBuyToken(event) {
+    this.setState({buyToken: event.target.value});
+    event.preventDefault();
+  }
+
+  updatePost(event) {
+    this.setState({post: event.target.value});
+    event.preventDefault();
+  }
+
+  buy(){
+    this.state.buy(this.state.buyToken);
+  }
+
+  publish(){
+    this.state.publish(this.state.post);
   }
 
   render(){
@@ -16,6 +43,14 @@ class NewPost extends React.Component {
       <h2>New Post</h2>
       <div>
         Hey {this.state.name}, you have {this.state.tokens} tokens and you write {this.state.posts} posts.<br />
+      </div>
+      <div>
+        write your post:
+        <input type="text" onChange={this.updatePost} value={this.state.post} /><button onClick={this.publish}>PUBLISH</button>
+      </div>
+      <div>
+        Insert how many tokens you want:
+        <input type="text" onChange={this.updateBuyToken} value={this.state.buyToken} /><button onClick={this.buy}>BUY</button>
       </div>
     </div>
   }
