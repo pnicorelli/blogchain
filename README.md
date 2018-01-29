@@ -1,6 +1,7 @@
 # Blogchain
 
-A blog on the ethereum blockchain.
+![screenshot](./screenshot.png)
+A useless blog on the ethereum blockchain.
 
 THIS IS NOT SERIOUS, I'm learning smartcontracts.
 

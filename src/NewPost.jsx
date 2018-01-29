@@ -39,17 +39,16 @@ class NewPost extends React.Component {
   }
 
   render(){
-    return <div>
+    return <div className="newpost">
       <h2>New Post</h2>
-      <div>
+      <div className="info">
         Hey {this.state.name}, you have {this.state.tokens} tokens and you write {this.state.posts} posts.<br />
       </div>
-      <div>
-        write your post:
-        <input type="text" onChange={this.updatePost} value={this.state.post} /><button onClick={this.publish}>PUBLISH</button>
+      <div className="new">
+        <input type="text" placeholder="write here your post" onChange={this.updatePost} value={this.state.post} /><button onClick={this.publish}>PUBLISH</button>
       </div>
-      <div>
-        Insert how many tokens you want:
+      <div  className="tokens">
+        Buy token (1 token = 1 ETH)<br></br>
         <input type="text" onChange={this.updateBuyToken} value={this.state.buyToken} /><button onClick={this.buy}>BUY</button>
       </div>
     </div>

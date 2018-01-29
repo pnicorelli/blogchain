@@ -23,38 +23,38 @@ class BlogChain extends React.Component {
 
   componentDidMount(){
     this.state.contract.methods.isUser().call({from: this.state.whoAreYou}, (err, res)=>{
+
+      this.state.contract.methods.howManyUsers().call({from: this.state.whoAreYou}, (err, res)=>{
+        for(let i=0; i<res; i++){
+          this.state.contract.methods.getUsername(i).call({from: this.state.whoAreYou}, (err, ures)=>{
+            let u = this.state.users;
+            u.push(ures);
+            this.setState({
+              users: u
+            });
+          });
+        }
+      });
+
+      this.state.contract.methods.howManyPosts().call({from: this.state.whoAreYou}, (err, res)=>{
+        for(let i=0; i<res; i++){
+          this.state.contract.methods.getPost(i).call({from: this.state.whoAreYou}, (err, pres)=>{
+            let ps = this.state.postsList;
+            let tmp = {
+              author: pres.o_author,
+              text: pres.o_text,
+              date: pres.o_date,
+            }
+            console.log(typeof ps)
+            ps.push(tmp);
+            this.setState({
+              postsList: ps
+            });
+          });
+        }
+      });
+
       if( res ){
-        this.state.contract.methods.howManyUsers().call({from: this.state.whoAreYou}, (err, res)=>{
-          for(let i=0; i<res; i++){
-            this.state.contract.methods.getUsername(i).call({from: this.state.whoAreYou}, (err, ures)=>{
-              let u = this.state.users;
-              u.push(ures);
-              this.setState({
-                users: u
-              });
-            });
-          }
-        });
-
-        this.state.contract.methods.howManyPosts().call({from: this.state.whoAreYou}, (err, res)=>{
-          for(let i=0; i<res; i++){
-            this.state.contract.methods.getPost(i).call({from: this.state.whoAreYou}, (err, pres)=>{
-              let ps = this.state.postsList;
-              let tmp = {
-                author: pres.o_author,
-                text: pres.o_text,
-                date: pres.o_date,
-              }
-              console.log(typeof ps)
-              ps.push(tmp);
-              this.setState({
-                postsList: ps
-              });
-            });
-          }
-        });
-
-
         this.state.contract.methods.getMe().call({from: this.state.whoAreYou}, (err, res)=>{
           this.setState({
             name: res.o_name,
@@ -63,8 +63,6 @@ class BlogChain extends React.Component {
             isUser: res
           });
         });
-
-
       } else {
         this.setState({
           isUser: res
@@ -108,8 +106,9 @@ class BlogChain extends React.Component {
 
   render(){
     return <div>
-      <div>Hey {this.state.whoAreYou}</div>
-      <Posts  posts={this.state.postsList}></Posts>
+      <h1 className="title">the useless blogchain</h1>
+      <div className="headerWallet">Your wallet address is {this.state.whoAreYou}</div>
+      <Posts posts={this.state.postsList}></Posts>
       <Users users={this.state.users}></Users>
       {
         this.state.isUser

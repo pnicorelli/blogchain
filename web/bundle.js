@@ -42536,7 +42536,7 @@ var Home = function (_React$Component) {
 
       _getWeb2.default.then(function (web3) {
         var blogchain = _contracts2.default.blogchain(web3);
-        var account = web3.eth.accounts[0];
+        var account = web3.eth.defaultAccount;
         blogchain.defaultAccount = account;
         _this2.setState({
           blogchain: blogchain,
@@ -42551,10 +42551,10 @@ var Home = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        { className: 'Home' },
+        { className: 'home' },
         this.state.blogchain ? _react2.default.createElement(_BlogChain2.default, { contract: this.state.blogchain, account: this.state.account }) : _react2.default.createElement(
           'div',
-          null,
+          { className: 'wholescreen' },
           'Not Connected'
         )
       );
@@ -42649,37 +42649,38 @@ var BlogChain = function (_React$Component) {
       var _this2 = this;
 
       this.state.contract.methods.isUser().call({ from: this.state.whoAreYou }, function (err, res) {
+
+        _this2.state.contract.methods.howManyUsers().call({ from: _this2.state.whoAreYou }, function (err, res) {
+          for (var i = 0; i < res; i++) {
+            _this2.state.contract.methods.getUsername(i).call({ from: _this2.state.whoAreYou }, function (err, ures) {
+              var u = _this2.state.users;
+              u.push(ures);
+              _this2.setState({
+                users: u
+              });
+            });
+          }
+        });
+
+        _this2.state.contract.methods.howManyPosts().call({ from: _this2.state.whoAreYou }, function (err, res) {
+          for (var i = 0; i < res; i++) {
+            _this2.state.contract.methods.getPost(i).call({ from: _this2.state.whoAreYou }, function (err, pres) {
+              var ps = _this2.state.postsList;
+              var tmp = {
+                author: pres.o_author,
+                text: pres.o_text,
+                date: pres.o_date
+              };
+              console.log(typeof ps === 'undefined' ? 'undefined' : _typeof(ps));
+              ps.push(tmp);
+              _this2.setState({
+                postsList: ps
+              });
+            });
+          }
+        });
+
         if (res) {
-          _this2.state.contract.methods.howManyUsers().call({ from: _this2.state.whoAreYou }, function (err, res) {
-            for (var i = 0; i < res; i++) {
-              _this2.state.contract.methods.getUsername(i).call({ from: _this2.state.whoAreYou }, function (err, ures) {
-                var u = _this2.state.users;
-                u.push(ures);
-                _this2.setState({
-                  users: u
-                });
-              });
-            }
-          });
-
-          _this2.state.contract.methods.howManyPosts().call({ from: _this2.state.whoAreYou }, function (err, res) {
-            for (var i = 0; i < res; i++) {
-              _this2.state.contract.methods.getPost(i).call({ from: _this2.state.whoAreYou }, function (err, pres) {
-                var ps = _this2.state.postsList;
-                var tmp = {
-                  author: pres.o_author,
-                  text: pres.o_text,
-                  date: pres.o_date
-                };
-                console.log(typeof ps === 'undefined' ? 'undefined' : _typeof(ps));
-                ps.push(tmp);
-                _this2.setState({
-                  postsList: ps
-                });
-              });
-            }
-          });
-
           _this2.state.contract.methods.getMe().call({ from: _this2.state.whoAreYou }, function (err, res) {
             _this2.setState({
               name: res.o_name,
@@ -42729,9 +42730,14 @@ var BlogChain = function (_React$Component) {
         'div',
         null,
         _react2.default.createElement(
+          'h1',
+          { className: 'title' },
+          'the useless blogchain'
+        ),
+        _react2.default.createElement(
           'div',
-          null,
-          'Hey ',
+          { className: 'headerWallet' },
+          'Your wallet address is ',
           this.state.whoAreYou
         ),
         _react2.default.createElement(_Posts2.default, { posts: this.state.postsList }),
@@ -42786,37 +42792,57 @@ var Posts = function (_React$Component) {
   }
 
   _createClass(Posts, [{
-    key: "render",
+    key: 'timeConverter',
+    value: function timeConverter(UNIX_timestamp) {
+      var a = new Date(UNIX_timestamp * 1000);
+      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      var year = a.getFullYear();
+      var month = months[a.getMonth()];
+      var date = a.getDate();
+      var hour = a.getHours();
+      var min = a.getMinutes();
+      var sec = a.getSeconds();
+      var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+      return time;
+    }
+  }, {
+    key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
-        "div",
-        null,
+        'div',
+        { className: 'posts' },
         _react2.default.createElement(
-          "h4",
+          'h4',
           null,
-          "Posts"
+          'Posts'
         ),
-        this.state.posts.map(function (i, u) {
-          return _react2.default.createElement(
-            "li",
-            { key: u },
-            _react2.default.createElement(
-              "div",
-              { className: "author" },
-              i.author
-            ),
-            _react2.default.createElement(
-              "div",
-              { className: "text" },
-              i.text
-            ),
-            _react2.default.createElement(
-              "div",
-              { className: "date" },
-              i.date
-            )
-          );
-        })
+        _react2.default.createElement(
+          'ul',
+          null,
+          this.state.posts.map(function (i, u) {
+            return _react2.default.createElement(
+              'li',
+              { key: u },
+              _react2.default.createElement(
+                'div',
+                { className: 'author' },
+                i.author
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'text' },
+                i.text
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'date' },
+                _this2.timeConverter(i.date)
+              )
+            );
+          })
+        )
       );
     }
   }]);
@@ -42867,7 +42893,7 @@ var Users = function (_React$Component) {
   }
 
   _createClass(Users, [{
-    key: 'componentWillReceiveProps',
+    key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(newProps) {
       console.log(newProps);
       this.setState({
@@ -42875,22 +42901,22 @@ var Users = function (_React$Component) {
       });
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       return _react2.default.createElement(
-        'div',
-        null,
+        "div",
+        { className: "users" },
         _react2.default.createElement(
-          'h2',
+          "h4",
           null,
-          'Users'
+          "Users"
         ),
         _react2.default.createElement(
-          'ul',
+          "ul",
           null,
           this.state.users.map(function (i, u) {
             return _react2.default.createElement(
-              'li',
+              "li",
               { key: u },
               i
             );
@@ -42982,7 +43008,7 @@ var NewPost = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'newpost' },
         _react2.default.createElement(
           'h2',
           null,
@@ -42990,7 +43016,7 @@ var NewPost = function (_React$Component) {
         ),
         _react2.default.createElement(
           'div',
-          null,
+          { className: 'info' },
           'Hey ',
           this.state.name,
           ', you have ',
@@ -43002,9 +43028,8 @@ var NewPost = function (_React$Component) {
         ),
         _react2.default.createElement(
           'div',
-          null,
-          'write your post:',
-          _react2.default.createElement('input', { type: 'text', onChange: this.updatePost, value: this.state.post }),
+          { className: 'new' },
+          _react2.default.createElement('input', { type: 'text', placeholder: 'write here your post', onChange: this.updatePost, value: this.state.post }),
           _react2.default.createElement(
             'button',
             { onClick: this.publish },
@@ -43013,8 +43038,9 @@ var NewPost = function (_React$Component) {
         ),
         _react2.default.createElement(
           'div',
-          null,
-          'Insert how many tokens you want:',
+          { className: 'tokens' },
+          'Buy token (1 token = 1 ETH)',
+          _react2.default.createElement('br', null),
           _react2.default.createElement('input', { type: 'text', onChange: this.updateBuyToken, value: this.state.buyToken }),
           _react2.default.createElement(
             'button',
@@ -43090,7 +43116,7 @@ var Subscribe = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'subscribe' },
         _react2.default.createElement('input', { type: 'text', value: this.state.name, onChange: this.handleChange }),
         _react2.default.createElement(
           'button',

@@ -1,0 +1,80 @@
+html, body{margin:0;padding:0}
+.title{
+  width:100%; text-align: center; color: white; background: gray;
+  padding: 20px 0px;
+  margin:0px;
+  text-transform: uppercase;
+}
+.wholescreen{
+    width:100%;
+    margin:5% 0;
+    color: red;
+    background: black;
+    text-align:center;
+    padding:5% 0;
+    font-size:4em;
+}
+.headerWallet{
+    width:100%;
+    background:lightgray;
+    color: darkgray;
+    text-align:center;
+    padding:10px 0px 10px 0px;
+    font-size:.8em;
+}
+.posts{
+    background: #eee;
+    width: 60%;
+    float:left;
+    padding:2%;
+}
+.users{
+    background: #444;
+    color: #fff;
+    width: 32%;
+    float:left;
+    padding:2%;
+}
+ul{
+    list-style-type:none;
+}
+ul>li{
+    padding: 10px 0px;
+}
+
+.author{
+    font-size:.8em;
+    font-weight:bold;
+}
+.text{
+    font-size:2em;
+}
+.date{
+    font-size:.7em;
+    font-style:italic;
+}
+.subscribe{
+    width:92%;
+    float:left;
+    padding:4%;
+}
+.newpost{
+    width:92%;
+    float:left;
+    padding:4%;
+
+}
+
+.newpost > .new {
+    font-size: 2em;
+}
+
+.newpost > .info {
+    font-size: .9em;
+}
+
+
+.newpost > .tokens {
+    padding-top:20px;
+    font-size: .9em;
+}

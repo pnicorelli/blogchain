@@ -23,7 +23,7 @@ class Subscribe extends React.Component {
   }
 
   render(){
-    return <div>
+    return <div className="subscribe">
       <input type="text" value={this.state.name} onChange={this.handleChange}></input>
       <button onClick={this.subscribe}>Subscribe</button>
     </div>

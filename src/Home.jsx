@@ -17,7 +17,7 @@ class Home extends React.Component {
     getWeb3
     .then(web3 => {
       let blogchain = contracts.blogchain(web3);
-      let account = web3.eth.accounts[0];
+      let account =  web3.eth.defaultAccount
       blogchain.defaultAccount = account;
       this.setState({
         blogchain: blogchain,
@@ -32,11 +32,11 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="Home">
+      <div className="home">
         {
           this.state.blogchain
           ? <BlogChain contract={this.state.blogchain} account={this.state.account}/>
-        : <div>Not Connected</div>
+        : <div className="wholescreen">Not Connected</div>
         }
       </div>
     );
