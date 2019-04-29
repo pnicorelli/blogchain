@@ -3,7 +3,7 @@
 ![screenshot](./screenshot.png)
 A useless blog on the ethereum blockchain.
 
-THIS IS NOT SERIOUS, I'm learning smartcontracts.
+THIS IS NOT SERIOUS, just for learning smartcontracts.
 
 #### TECH
 
